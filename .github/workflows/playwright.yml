@@ -15,7 +15,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # 1. Install dependencies
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -31,13 +31,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # 2. Run tests
+
       - name: Run Playwright tests
         id: run_tests
         run: npx playwright test
         continue-on-error: true
 
-      # 3. Copy allure data from previous runs (history/trend graph)
       - name: Load previous gh-pages report (for history)
         uses: actions/checkout@v4
         continue-on-error: true
@@ -45,7 +44,6 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      # 4. Create new report
       - name: Build Allure report
         uses: simple-elf/allure-report-action@master
         if: always()
@@ -55,7 +53,6 @@ jobs:
           allure_report: allure-report
           keep_reports: 20
 
-      # 5. Push report to the other branch of the same repo
       - name: Publish report to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         if: always()
@@ -64,19 +61,7 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
 
-      # 6. Add GitHub Pages to the branch with the report
-      #    (Only needs to succeed once; safe to re-run — GitHub returns 409 if already enabled)
-      - name: Enable GitHub Pages on gh-pages branch
-        if: always()
-        continue-on-error: true
-        run: |
-          curl -s -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pages" \
-            -d '{"source":{"branch":"gh-pages","path":"/"}}'
 
-      # Fail the job if tests failed, even though we still published the report above
       - name: Fail workflow if tests failed
         if: steps.run_tests.outcome == 'failure'
         run: exit 1

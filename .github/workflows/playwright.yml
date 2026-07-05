@@ -56,8 +56,9 @@ jobs:
       - name: Publish report to gh-pages branch
         if: always()
         run: |
+          sudo chown -R $(whoami):$(whoami) allure-history
           cd allure-history
-          sudo rm -rf .git
+          rm -rf .git
           git init -b gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

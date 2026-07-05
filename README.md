@@ -21,7 +21,8 @@ These instructions will help you get the project running on your local machine.
 1. Clone the repository:
 
 ```
-git clone <your-repo-url>
+git clone https://github.com/Verssax/Playwright-POM-Allure-task.git
+
 ```
 
 > **Note**

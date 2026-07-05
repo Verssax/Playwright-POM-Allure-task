@@ -10,7 +10,7 @@ The project currently covers two areas:
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/en/) version 18 or higher.
+- [Node.js](https://nodejs.org/en/) version 20 or higher.
 - npm (comes bundled with Node.js).
 - Git, to clone the repository.
 
